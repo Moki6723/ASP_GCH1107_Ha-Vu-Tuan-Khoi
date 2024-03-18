@@ -1,0 +1,65 @@
+﻿@model Asmmvc1670.Models.ViewModels.CartItem
+
+<div class="container">
+    @if (Model.CartItems.Count == 0)
+    {
+        <div class="alert alert-info" role="alert">
+            Your cart is empty.
+        </div>
+    }
+    else
+    {
+        <h2>Shopping Cart</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Image</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Address</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cartItem in Model.CartItems)
+                {
+                    <tr>
+                        <td>@cartItem.ProductName</td>
+                        <td><img src="@cartItem.Image" alt="@cartItem.ProductName" style="max-width: 100px; max-height: 100px;" /></td>
+                        <td>@cartItem.Quantity</td>
+                        <td>@cartItem.Price</td>
+                        <td>@(cartItem.Quantity * cartItem.Price)</td>
+                        <td>
+                            <form asp-action="UpdateAddress" method="post">
+                                <input type="hidden" name="productId" value="@cartItem.ProductId" />
+                                <input type="text" name="newAddress" value="@cartItem.Address" />
+                            <button type="submit" class="btn btn-sm btn-primary">Update Address</button>
+                            </form>
+                        </td>
+                        <td>
+                            <div>
+                                <a class="btn btn-secondary btn-sm" asp-controller="Cart" asp-action="Increase" asp-route-id="@cartItem.ProductId"> + </a>
+                                <input class="" type="text" name="quantity" value="@cartItem.Quantity" autocomplete="off" size="2">
+                                <a class="btn btn-success btn-sm" asp-controller="Cart" asp-action="Decrease" asp-route-id="@cartItem.ProductId"> - </a>
+                                <a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Remove" asp-route-id="@cartItem.ProductId">Remove</a>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4"><strong>Grand Total: </strong></td>
+                    <td>@Model.GrandTotal</td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+</div>
+
+
